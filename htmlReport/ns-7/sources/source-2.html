@@ -1,0 +1,94 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > IPreguntasService</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.springtrivial.servicio</a>
+</div>
+
+<h1>Coverage Summary for Class: IPreguntasService (com.example.springtrivial.servicio)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+</tr>
+  <tr>
+    <td class="name">IPreguntasService$MockitoMock$E0xwe0BA</td>
+  </tr>
+  <tr>
+    <td class="name">IPreguntasService$MockitoMock$E0xwe0BA$auxiliary$RkmrAbOG</td>
+  </tr>
+  <tr>
+    <td class="name">IPreguntasService$MockitoMock$E0xwe0BA$auxiliary$SCxG4E4M</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.springtrivial.servicio;
+&nbsp;
+&nbsp;import com.example.springtrivial.modelo.Preguntas;
+&nbsp;import com.example.springtrivial.response.PreguntasResponseRest;
+&nbsp;import org.springframework.http.ResponseEntity;
+&nbsp;
+&nbsp;public interface IPreguntasService {
+&nbsp;	
+&nbsp;	public ResponseEntity&lt;PreguntasResponseRest&gt; buscarPreguntas();
+&nbsp;	public ResponseEntity&lt;PreguntasResponseRest&gt; preguntaRandom();
+&nbsp;	public ResponseEntity&lt;PreguntasResponseRest&gt; buscarPorId(int id);
+&nbsp;	public ResponseEntity&lt;PreguntasResponseRest&gt; buscarPorCategoria(String categoria);
+&nbsp;	public ResponseEntity&lt;PreguntasResponseRest&gt; crear(Preguntas pregunta);
+&nbsp;	public ResponseEntity&lt;PreguntasResponseRest&gt; actualizar(Preguntas pregunta, int id);
+&nbsp;	public ResponseEntity&lt;PreguntasResponseRest&gt; eliminar (int id);
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-02-15 10:26</div>
+</div>
+</body>
+</html>

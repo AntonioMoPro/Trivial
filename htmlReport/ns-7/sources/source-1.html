@@ -1,0 +1,359 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1252"> 
+  <title>Coverage Report > PreguntasServiceImpl</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">com.example.springtrivial.servicio</a>
+</div>
+
+<h1>Coverage Summary for Class: PreguntasServiceImpl (com.example.springtrivial.servicio)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">PreguntasServiceImpl</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/9)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/120)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.example.springtrivial.servicio;
+&nbsp;
+&nbsp;
+&nbsp;import com.example.springtrivial.modelo.Preguntas;
+&nbsp;import com.example.springtrivial.modelo.dao.IPreguntasDao;
+&nbsp;import com.example.springtrivial.response.PreguntasResponseRest;
+&nbsp;import org.slf4j.Logger;
+&nbsp;import org.slf4j.LoggerFactory;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.http.HttpStatus;
+&nbsp;import org.springframework.http.ResponseEntity;
+&nbsp;import org.springframework.stereotype.Service;
+&nbsp;import org.springframework.transaction.annotation.Transactional;
+&nbsp;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Optional;
+&nbsp;import java.util.Random;
+&nbsp;
+&nbsp;
+&nbsp;@Service
+<b class="nc">&nbsp;public class PreguntasServiceImpl implements IPreguntasService {</b>
+&nbsp;
+<b class="nc">&nbsp;	private static final Logger log = LoggerFactory.getLogger(PreguntasServiceImpl.class);</b>
+&nbsp;	
+&nbsp;	@Autowired
+&nbsp;	private IPreguntasDao preguntasDao;
+&nbsp;	
+&nbsp;	@Override
+&nbsp;	@Transactional(readOnly = true)
+&nbsp;	public ResponseEntity&lt;PreguntasResponseRest&gt; buscarPreguntas() {
+&nbsp;		
+<b class="nc">&nbsp;		log.info(&quot;inicio metodo buscarPreguntas()&quot;);</b>
+&nbsp;		
+<b class="nc">&nbsp;		PreguntasResponseRest response = new PreguntasResponseRest();</b>
+&nbsp;		
+&nbsp;		try {
+&nbsp;			
+<b class="nc">&nbsp;			List&lt;Preguntas&gt; preguntas = (List&lt;Preguntas&gt;) preguntasDao.findAll();</b>
+&nbsp;			
+<b class="nc">&nbsp;			response.getPreguntasResponse().setCategoria(preguntas);</b>
+&nbsp;			
+<b class="nc">&nbsp;			response.setMetada(&quot;Respuesta ok&quot;, &quot;00&quot;, &quot;Respuesta exitosa&quot;);</b>
+&nbsp;			
+<b class="nc">&nbsp;		} catch (Exception e) {</b>
+<b class="nc">&nbsp;			response.setMetada(&quot;Respuesta nok&quot;, &quot;-1&quot;, &quot;Error al consultar preguntas&quot;);</b>
+<b class="nc">&nbsp;			log.error(&quot;error al consultar preguntas: &quot;, e.getMessage());</b>
+<b class="nc">&nbsp;			e.getStackTrace();</b>
+<b class="nc">&nbsp;			return new ResponseEntity&lt;PreguntasResponseRest&gt;(response, HttpStatus.INTERNAL_SERVER_ERROR);</b>
+<b class="nc">&nbsp;		}</b>
+&nbsp;		
+<b class="nc">&nbsp;		return new ResponseEntity&lt;PreguntasResponseRest&gt;(response, HttpStatus.OK); //devuelve 200</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	@Transactional(readOnly = true)
+&nbsp;	public ResponseEntity&lt;PreguntasResponseRest&gt; preguntaRandom() {
+<b class="nc">&nbsp;		log.info(&quot;Inicio metodo buscarPorId)&quot;);</b>
+&nbsp;
+<b class="nc">&nbsp;		PreguntasResponseRest response = new PreguntasResponseRest();</b>
+<b class="nc">&nbsp;		List&lt;Preguntas&gt; list = new ArrayList&lt;&gt;();</b>
+<b class="nc">&nbsp;		int id = new Random().nextInt(1, 61);</b>
+&nbsp;
+&nbsp;		try {
+&nbsp;
+<b class="nc">&nbsp;			Optional&lt;Preguntas&gt; pregunta = preguntasDao.findById(id);</b>
+&nbsp;
+<b class="nc">&nbsp;			if (pregunta.isPresent()) {</b>
+<b class="nc">&nbsp;				list.add(pregunta.get());</b>
+<b class="nc">&nbsp;				response.getPreguntasResponse().setCategoria(list);</b>
+&nbsp;			} else {
+<b class="nc">&nbsp;				log.error(&quot;Error en consultar preguntas&quot;);</b>
+<b class="nc">&nbsp;				response.setMetada(&quot;Respuesta nok&quot;, &quot;-1&quot;, &quot;Pregunta no encontrado&quot;);</b>
+<b class="nc">&nbsp;				return new ResponseEntity&lt;PreguntasResponseRest&gt;(response, HttpStatus.NOT_FOUND);</b>
+&nbsp;			}
+&nbsp;
+<b class="nc">&nbsp;		} catch (Exception e) {</b>
+<b class="nc">&nbsp;			log.error(&quot;Error en consultar preguntas&quot;);</b>
+<b class="nc">&nbsp;			response.setMetada(&quot;Respuesta nok&quot;, &quot;-1&quot;, &quot;Error al consultar preguntas&quot;);</b>
+<b class="nc">&nbsp;			return new ResponseEntity&lt;PreguntasResponseRest&gt;(response, HttpStatus.INTERNAL_SERVER_ERROR);</b>
+<b class="nc">&nbsp;		}</b>
+&nbsp;
+<b class="nc">&nbsp;		response.setMetada(&quot;Respuesta ok&quot;, &quot;00&quot;, &quot;Respuesta exitosa&quot;);</b>
+<b class="nc">&nbsp;		return new ResponseEntity&lt;PreguntasResponseRest&gt;(response, HttpStatus.OK); //devuelve 200</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	@Transactional(readOnly = true)
+&nbsp;	public ResponseEntity&lt;PreguntasResponseRest&gt; buscarPorId(int id) {
+&nbsp;		
+<b class="nc">&nbsp;		log.info(&quot;Inicio metodo buscarPorId)&quot;);</b>
+&nbsp;		
+<b class="nc">&nbsp;		PreguntasResponseRest response = new PreguntasResponseRest();</b>
+<b class="nc">&nbsp;		List&lt;Preguntas&gt; list = new ArrayList&lt;&gt;();</b>
+&nbsp;		
+&nbsp;		try {
+&nbsp;			
+<b class="nc">&nbsp;			Optional&lt;Preguntas&gt; pregunta = preguntasDao.findById(id);</b>
+&nbsp;			
+<b class="nc">&nbsp;			if (pregunta.isPresent()) {</b>
+<b class="nc">&nbsp;				list.add(pregunta.get());</b>
+<b class="nc">&nbsp;				response.getPreguntasResponse().setCategoria(list);</b>
+&nbsp;			} else {
+<b class="nc">&nbsp;				log.error(&quot;Error en consultar preguntas&quot;);</b>
+<b class="nc">&nbsp;				response.setMetada(&quot;Respuesta nok&quot;, &quot;-1&quot;, &quot;Pregunta no encontrado&quot;);</b>
+<b class="nc">&nbsp;				return new ResponseEntity&lt;PreguntasResponseRest&gt;(response, HttpStatus.NOT_FOUND);</b>
+&nbsp;			}
+&nbsp;			
+<b class="nc">&nbsp;		} catch (Exception e) {</b>
+<b class="nc">&nbsp;			log.error(&quot;Error en consultar preguntas&quot;);</b>
+<b class="nc">&nbsp;			response.setMetada(&quot;Respuesta nok&quot;, &quot;-1&quot;, &quot;Error al consultar preguntas&quot;);</b>
+<b class="nc">&nbsp;			return new ResponseEntity&lt;PreguntasResponseRest&gt;(response, HttpStatus.INTERNAL_SERVER_ERROR);</b>
+<b class="nc">&nbsp;		}</b>
+&nbsp;		
+<b class="nc">&nbsp;		response.setMetada(&quot;Respuesta ok&quot;, &quot;00&quot;, &quot;Respuesta exitosa&quot;);</b>
+<b class="nc">&nbsp;		return new ResponseEntity&lt;PreguntasResponseRest&gt;(response, HttpStatus.OK); //devuelve 200</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	@Transactional(readOnly = true)
+&nbsp;	public ResponseEntity&lt;PreguntasResponseRest&gt; buscarPorCategoria(String categoria) {
+&nbsp;
+<b class="nc">&nbsp;		log.info(&quot;Inicio metodo buscarPorCategoria)&quot;);</b>
+&nbsp;
+<b class="nc">&nbsp;		PreguntasResponseRest response = new PreguntasResponseRest();</b>
+&nbsp;
+&nbsp;		try {
+&nbsp;
+<b class="nc">&nbsp;			List&lt;Preguntas&gt; preguntas = (List&lt;Preguntas&gt;) preguntasDao.findAll();</b>
+<b class="nc">&nbsp;			List&lt;Preguntas&gt; categorias = new ArrayList&lt;&gt;();</b>
+&nbsp;
+<b class="nc">&nbsp;			for (Preguntas preguntas1 : preguntas){</b>
+<b class="nc">&nbsp;				if (preguntas1.getCategoria().equals(categoria)){</b>
+<b class="nc">&nbsp;					categorias.add(preguntas1);</b>
+&nbsp;				}
+<b class="nc">&nbsp;			}</b>
+&nbsp;
+<b class="nc">&nbsp;			response.getPreguntasResponse().setCategoria(categorias);</b>
+&nbsp;
+<b class="nc">&nbsp;			response.setMetada(&quot;Respuesta ok&quot;, &quot;00&quot;, &quot;Respuesta exitosa&quot;);</b>
+&nbsp;
+<b class="nc">&nbsp;		} catch (Exception e) {</b>
+<b class="nc">&nbsp;			response.setMetada(&quot;Respuesta nok&quot;, &quot;-1&quot;, &quot;Error al consultar preguntas&quot;);</b>
+<b class="nc">&nbsp;			log.error(&quot;error al consultar preguntas: &quot;, e.getMessage());</b>
+<b class="nc">&nbsp;			e.getStackTrace();</b>
+<b class="nc">&nbsp;			return new ResponseEntity&lt;PreguntasResponseRest&gt;(response, HttpStatus.INTERNAL_SERVER_ERROR);</b>
+<b class="nc">&nbsp;		}</b>
+&nbsp;
+<b class="nc">&nbsp;		return new ResponseEntity&lt;PreguntasResponseRest&gt;(response, HttpStatus.OK); //devuelve 200</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	@Transactional
+&nbsp;	public ResponseEntity&lt;PreguntasResponseRest&gt; crear(Preguntas pregunta) {
+<b class="nc">&nbsp;		log.info(&quot;Inicio metodo crear preguntas&quot;);</b>
+&nbsp;		
+<b class="nc">&nbsp;		PreguntasResponseRest response = new PreguntasResponseRest();</b>
+<b class="nc">&nbsp;		List&lt;Preguntas&gt; list = new ArrayList&lt;&gt;();</b>
+&nbsp;		
+&nbsp;		try {
+&nbsp;			
+<b class="nc">&nbsp;			Preguntas preguntaGuardada = preguntasDao.save(pregunta);</b>
+&nbsp;			
+<b class="nc">&nbsp;			if( preguntaGuardada != null) {</b>
+<b class="nc">&nbsp;				list.add(preguntaGuardada);</b>
+<b class="nc">&nbsp;				response.getPreguntasResponse().setCategoria(list);</b>
+&nbsp;			} else {
+<b class="nc">&nbsp;				log.error(&quot;Error en grabar pregunta&quot;);</b>
+<b class="nc">&nbsp;				response.setMetada(&quot;Respuesta nok&quot;, &quot;-1&quot;, &quot;Pregunta no guardada&quot;);</b>
+<b class="nc">&nbsp;				return new ResponseEntity&lt;PreguntasResponseRest&gt;(response, HttpStatus.BAD_REQUEST);</b>
+&nbsp;			}
+&nbsp;			
+<b class="nc">&nbsp;		} catch( Exception e) {</b>
+<b class="nc">&nbsp;			log.error(&quot;Error en grabar pregunta&quot;);</b>
+<b class="nc">&nbsp;			response.setMetada(&quot;Respuesta nok&quot;, &quot;-1&quot;, &quot;Error al grabar pregunta&quot;);</b>
+<b class="nc">&nbsp;			return new ResponseEntity&lt;PreguntasResponseRest&gt;(response, HttpStatus.INTERNAL_SERVER_ERROR);</b>
+<b class="nc">&nbsp;		}</b>
+&nbsp;		
+<b class="nc">&nbsp;		response.setMetada(&quot;Respuesta ok&quot;, &quot;00&quot;, &quot;Pregunta creada&quot;);</b>
+<b class="nc">&nbsp;		return new ResponseEntity&lt;PreguntasResponseRest&gt;(response, HttpStatus.OK); //devuelve 200</b>
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	@Transactional
+&nbsp;	public ResponseEntity&lt;PreguntasResponseRest&gt; actualizar(Preguntas pregunta, int id) {
+&nbsp;		
+<b class="nc">&nbsp;		log.info(&quot;Inicio metodo actualizar&quot;);</b>
+&nbsp;		
+<b class="nc">&nbsp;		PreguntasResponseRest response = new PreguntasResponseRest();</b>
+<b class="nc">&nbsp;		List&lt;Preguntas&gt; list = new ArrayList&lt;&gt;();</b>
+&nbsp;		
+&nbsp;		try {
+&nbsp;			
+<b class="nc">&nbsp;			Optional&lt;Preguntas&gt; preguntaBuscada = preguntasDao.findById(id);</b>
+&nbsp;			
+<b class="nc">&nbsp;			if (preguntaBuscada.isPresent()) {</b>
+<b class="nc">&nbsp;				preguntaBuscada.get().setPregunta(pregunta.getPregunta());</b>
+<b class="nc">&nbsp;				preguntaBuscada.get().setCategoria(pregunta.getCategoria());</b>
+&nbsp;				 
+<b class="nc">&nbsp;				 Preguntas preguntasActualizar = preguntasDao.save(preguntaBuscada.get()); //actualizando</b>
+&nbsp;				 
+<b class="nc">&nbsp;				 if( preguntasActualizar != null ) {</b>
+<b class="nc">&nbsp;					 response.setMetada(&quot;Respuesta ok&quot;, &quot;00&quot;, &quot;Preguta actualizado&quot;);</b>
+<b class="nc">&nbsp;					 list.add(preguntasActualizar);</b>
+<b class="nc">&nbsp;					 response.getPreguntasResponse().setCategoria(list);</b>
+&nbsp;				 } else {
+<b class="nc">&nbsp;					 log.error(&quot;error en actualizar categoria&quot;);</b>
+<b class="nc">&nbsp;					 response.setMetada(&quot;Respuesta nok&quot;, &quot;-1&quot;, &quot;Pregunta no actualizada&quot;);</b>
+<b class="nc">&nbsp;					 return new ResponseEntity&lt;PreguntasResponseRest&gt;(response, HttpStatus.BAD_REQUEST);</b>
+&nbsp;				 }
+&nbsp;				 
+&nbsp;				 
+<b class="nc">&nbsp;			} else {</b>
+<b class="nc">&nbsp;				log.error(&quot;error en actualizar pregunta&quot;);</b>
+<b class="nc">&nbsp;				response.setMetada(&quot;Respuesta nok&quot;, &quot;-1&quot;, &quot;Pregunta no actualizado&quot;);</b>
+<b class="nc">&nbsp;				return new ResponseEntity&lt;PreguntasResponseRest&gt;(response, HttpStatus.NOT_FOUND);</b>
+&nbsp;			}
+&nbsp;			
+<b class="nc">&nbsp;		} catch ( Exception e) {</b>
+<b class="nc">&nbsp;			log.error(&quot;error en actualizar pregunta&quot;, e.getMessage());</b>
+<b class="nc">&nbsp;			e.getStackTrace();</b>
+<b class="nc">&nbsp;			response.setMetada(&quot;Respuesta nok&quot;, &quot;-1&quot;, &quot;Pregunta no actualizada&quot;);</b>
+<b class="nc">&nbsp;			return new ResponseEntity&lt;PreguntasResponseRest&gt;(response, HttpStatus.INTERNAL_SERVER_ERROR);</b>
+<b class="nc">&nbsp;		}</b>
+&nbsp;		
+<b class="nc">&nbsp;		return new ResponseEntity&lt;PreguntasResponseRest&gt;(response, HttpStatus.OK);</b>
+&nbsp;		
+&nbsp;	}
+&nbsp;
+&nbsp;	@Override
+&nbsp;	@Transactional
+&nbsp;	public ResponseEntity&lt;PreguntasResponseRest&gt; eliminar(int id) {
+&nbsp;		
+<b class="nc">&nbsp;		log.info(&quot;Inicio metodo eliminar categoria&quot;);</b>
+&nbsp;		
+<b class="nc">&nbsp;		PreguntasResponseRest response = new PreguntasResponseRest();</b>
+&nbsp;		
+&nbsp;		 try {
+&nbsp;			 
+&nbsp;			 //eliminamos el registro
+<b class="nc">&nbsp;			 preguntasDao.deleteById(id);</b>
+<b class="nc">&nbsp;			 response.setMetada(&quot;Respuesta ok&quot;, &quot;00&quot;, &quot;pregunta eliminada&quot;);</b>
+&nbsp;			 
+<b class="nc">&nbsp;		 } catch (Exception e) {</b>
+<b class="nc">&nbsp;			log.error(&quot;error en eliminar pregunta&quot;, e.getMessage());</b>
+<b class="nc">&nbsp;			e.getStackTrace();</b>
+<b class="nc">&nbsp;			response.setMetada(&quot;Respuesta nok&quot;, &quot;-1&quot;, &quot;Categoria no eliminada&quot;);</b>
+<b class="nc">&nbsp;			return new ResponseEntity&lt;PreguntasResponseRest&gt;(response, HttpStatus.INTERNAL_SERVER_ERROR);</b>
+<b class="nc">&nbsp;		 }</b>
+&nbsp;		 
+<b class="nc">&nbsp;		 return new ResponseEntity&lt;PreguntasResponseRest&gt;(response, HttpStatus.OK);</b>
+&nbsp;		
+&nbsp;	}
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-02-15 10:26</div>
+</div>
+</body>
+</html>
